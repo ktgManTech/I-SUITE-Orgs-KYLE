@@ -1,0 +1,84 @@
+﻿@model IndexOrganizationGridViewModel
+
+
+<nav class="navbar navbar-expand-sm navbar-light bg-white">
+  <div class="container-fluid">
+    <div class="dropdown">
+                <a href="#" class="d-flex align-items-center link-dark text-decoration-none" id="dropdownNavLink" data-bs-toggle="dropdown" aria-expanded="false">
+                  <img src="~/assets/waffle.png" />
+                </a>
+                <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownNavLink">
+            
+                  <li><a class="dropdown-item" href="#" aria-current="page"><img src="~/assets/waffleicons/BIDS Icon.png" style="width: 50px; height: auto;"/></a></li>
+                  <li><a class="dropdown-item" href="#"><img src="~/assets/waffleicons/Contacts Icon.png" style="width: 50px; height: auto;" /></a></li>  
+                   <li><a class="dropdown-item" href="#"><img src="~/assets/waffleicons/Event Registration Icon.png" style="width: 50px; height: auto;" /></a></li>
+                    <li><a class="dropdown-item" href="#"><img src="~/assets/waffleicons/ITFT Icon.png" style="width: 50px; height: auto;" /></a></li>
+                  <li><a class="dropdown-item" href="#"><img src="~/assets/waffleicons/Organization Icon.png"  style="width: 50px; height: auto;"/></a></li>
+                  <li><a class="dropdown-item" href="#"><img src="~/assets/waffleicons/Project Management Icon.png"  style="width: 50px; height: auto;"/></a></li>
+                </ul>
+              </div>
+    <div class="collapse navbar-collapse" id="mynavbar">
+      <ul class="navbar-nav me-auto justify-content-center">
+        <li class="nav-item">
+          <a class="nav-link" href="javascript:void(0)"> <h1>Organizations</h1></a>
+        </li>
+        </ul>
+        <ul class="navbar-nav me-auto justify-content-end">
+        <li class="align-content-end"><a asp-controller="Organization" asp-action="AddNewOrganization" class="btn btn-header">Add New Organization</a></li>
+        <li class="align-content-end"><img src="~/assets/avatar.png" /></li>
+        <li class="align-content-end"><p class="avatar-text">First, Last Name</p></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- MOONA ORGINAL CODE-->
+ <!--<div class="container">
+     <div class="text-center">
+        <h1 class="display-4">Organizations</h1>
+    </div>
+    
+<div class="col-12 text-right">
+            <a asp-controller="Organization" asp-action="AddNewOrganization" class="btn btn-primary">Add New Organization</a>
+ </div> -->
+ <br />
+  
+@(Html.Kendo().Grid(Model.GetOrganizationList)
+    .Name("masterGrid")
+    .Columns(columns => {
+       // columns.Bound(o => o.OrganizationId).Title("").Hidden(true);
+        columns.Bound(o => o.OrganizationId).Title("").Hidden(true);
+        columns.Template("<a class='text-dark' href='" + Url.Action("FirstViewOrganization", "Organization" , new { OrganizationID = "#=OrganizationId#" }) + "' >#=OrganizationName#</a>").Title("");
+        columns.Template("<a class='text-dark' href='" + Url.Action("ReturnDetailOrganization", "Organization", new { OrganizationID = "#=OrganizationId#" }) + "' >#=OrganizationAddress#</a>").Title("Address"); 
+        columns.Template("<a class='text-dark' href='" + Url.Action("ReturnDetailOrganization", "Organization", new { OrganizationID = "#=OrganizationId#" }) + "' >#=OrganizationCity#</a>").Title("City");            
+        columns.Template("<a class='text-dark' href='" + Url.Action("ReturnDetailOrganization", "Organization", new { OrganizationID = "#=OrganizationId#" }) + "' >#=OrganizationState#</a>").Title("State"); 
+    })
+    .ToolBar(t => t.Search())
+    .Search(s => {
+            s.Field(o => o.OrganizationName, "contains");
+            s.Field(o =>  o.OrganizationAddress, "contains");
+            s.Field(o =>  o.OrganizationCity, "contains");
+            s.Field(o =>  o.OrganizationState, "contains");
+    })
+    .Mobile()
+    .Pageable(pageable => pageable.ButtonCount(4).Info(false))
+    .Selectable(selectable => selectable
+        .Mode(GridSelectionMode.Single)
+    )
+    .Navigatable()
+    .Sortable()
+    .Resizable(r=>r.Columns(true))
+    .Reorderable(r => r.Columns(true))
+    .Groupable(g=>g.ShowFooter(false))
+    .Filterable()
+     .DataSource(dataSource => dataSource
+                                    .Ajax()
+                                    .Batch(true)
+                                    .PageSize(15)
+                                    .AutoSync(true)
+                                    .ServerOperation(false) )  
+ )       
+
+
+</div>
+

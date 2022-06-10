@@ -1,0 +1,354 @@
+﻿@model ReturnDetailOrganizationViewModel
+
+ <nav class="navbar navbar-expand-sm navbar-light bg-white">
+  <div class="container-fluid">
+    <div class="dropdown">
+                <a href="#" class="d-flex align-items-center link-dark text-decoration-none" id="dropdownNavLink" data-bs-toggle="dropdown" aria-expanded="false">
+                  <img src="~/assets/waffle.png" />
+                </a>
+                <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownNavLink">
+           
+                  <li><a class="dropdown-item" href="#" aria-current="page"><img src="~/assets/waffleicons/BIDS Icon.png" style="width: 50px; height: auto;"/></a></li>
+                  <li><a class="dropdown-item" href="#"><img src="~/assets/waffleicons/Contacts Icon.png" style="width: 50px; height: auto;" /></a></li>  
+                   <li><a class="dropdown-item" href="#"><img src="~/assets/waffleicons/Event Registration Icon.png" style="width: 50px; height: auto;" /></a></li>
+                    <li><a class="dropdown-item" href="#"><img src="~/assets/waffleicons/ITFT Icon.png" style="width: 50px; height: auto;" /></a></li>
+                  <li><a class="dropdown-item" href="#"><img src="~/assets/waffleicons/Organization Icon.png"  style="width: 50px; height: auto;"/></a></li>
+                  <li><a class="dropdown-item" href="#"><img src="~/assets/waffleicons/Project Management Icon.png"  style="width: 50px; height: auto;"/></a></li>
+                </ul>
+              </div>
+    <div class="collapse navbar-collapse" id="mynavbar">
+      <ul class="navbar-nav me-auto justify-content-center">
+        <li class="nav-item">
+          <a class="nav-link" href="javascript:void(0)"> <h1>Organizations</h1></a>
+        </li>
+        </ul>
+        <ul class="navbar-nav me-auto justify-content-end">
+        <li class="align-content-end"><a asp-controller="Organization" asp-action="AddNewOrganization" class="btn btn-header">Add New Organization</a></li>
+        <li class="align-content-end"><img src="~/assets/avatar.png" /></li>
+        <li class="align-content-end"><p class="avatar-text">First, Last Name</p></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+
+
+
+
+ <br />
+
+@(Html.Kendo().Splitter()
+      .Name("orgVerticalPageSplitter")
+      .Orientation(SplitterOrientation.Horizontal)
+    .Panes(horizontalPanes =>
+      {
+           horizontalPanes.Add()
+                            .HtmlAttributes(new { id = "left-pane" })
+                            .Size("400px")    
+                            .Collapsible(true)
+                            .Content(@<div class="pane-content">
+                                                                        @(Html.Kendo().Grid(Model.GetRDOrganizationList)
+                                .Name("detailGrid")
+                                .Columns(columns => {
+                                 columns.Bound(o => o.OrganizationId).Title("").Hidden(true);
+                                 columns.Template("<a class='text-dark' href='" + Url.Action("ReturnDetailOrganization", "Organization", new { OrganizationID = "#=OrganizationId#" }) +"'>#=OrganizationName# </a>").Title("");
+                                })  
+                                 .ToolBar(t => t.Search())
+                                .Search(s => {
+                                        s.Field(o => o.OrganizationName, "contains");
+                                        s.Field(o =>  o.OrganizationAddress1, "contains");
+                                        s.Field(o =>  o.OrganizationCity, "contains");
+                                        s.Field(o =>  o.OrganizationState, "contains");
+                                })
+                                .Pageable(pageable => pageable.ButtonCount(4).Info(false))  
+                              //   .Height(700)
+                                 .Sortable()
+                                 .Filterable()
+                        .DataSource(dataSource => dataSource
+                                    .Ajax()
+                                    .Batch(true)
+                                    .PageSize(20)
+                                    .AutoSync(true)
+                                    .ServerOperation(false) )  
+                                                                        )</div>);
+
+          horizontalPanes.Add()
+              .Scrollable(true)
+              .Collapsible(true)
+              .Content(
+                Html.Kendo().Splitter()
+                   .Orientation(SplitterOrientation.Vertical)
+                    .Name("orgHorizontalPageSplitter")
+                    .Panes(verticalPanes =>
+                    {
+                        verticalPanes.Add()
+                            .HtmlAttributes(new { id = "left-pane" })
+                            .Size("400px")
+                             .Scrollable(true)
+                            .Collapsible(true)
+                            .Content(   @<div class="pane-content-KYLE">
+
+
+                                
+                               
+
+                                <!-- General Info & Button -->
+
+                                             <div class="w3-container-first-2">
+
+                                                        <div class="row">
+                                                           <div class="col-sm-1">
+
+                                                               <a onclick="location.href='/Organization?OrganizationID=101';">
+                                                                    <i class="fa-solid fa-circle-arrow-left fa-4x"></i>
+                                                               </a>
+
+                                                               
+                                                           </div>
+                                                           <div class="col-sm-3">
+                                                               <h2 class="large-heading"> Go Back </h2>
+                                                           </div>
+                                                           
+                                                         </div>
+
+                                                         <div class="row spacing">
+                                                           <div class="col-sm-2">
+                                                               <div class="circle">MI</div>
+                                                           </div>
+                                                           <div class="col">
+                                                               <div class="col">
+                                                                   <h2 class="large-heading-B"> ManTech International </h2> 
+                                                               </div>
+                                                            </div>
+                                                         </div>
+
+                                                     <div class="w3-container-first-3">
+                                                       <div class="row">
+                                                            <div class="col-sm-3">
+                                                                
+                                                            </div>
+                                                            <div class="col-sm-2">
+                                                                 <button href="ReturnDetailOrganization" class="btn btn-primary-active"> Active </button>
+                                                            </div>
+                                                            <div class="col-sm-3">
+                                                                     <button onclick="location.href='/Organization/ReturnDetailOrganization?OrganizationID=101';" class="btn btn-primary-edit"> Edit Organization </button>
+                                                            </div>
+                                                            
+                                                       </div>
+
+                                                      
+
+                                                    </div>
+
+
+                                           </div>
+
+                                            
+                                               
+                                           
+
+
+                                       
+
+                                          
+                                <!-- Office Information -->
+
+                                <div class="w3-container-intro">
+
+                                                        
+
+                                                        
+
+                                                         <div class="w3-container-first">
+                                                           <div class="row">
+                                                               <div class="col gen-a">
+                                                                   <div class="form-group row">
+
+                                                                    <div class="col-sm-3">
+                                                                      
+                                                                    </div>
+                                                                   
+                                                                    <div class="col-sm-2">
+                                                                      <h6 class="office-title">Herndon Office</h6>
+                                                                    </div>
+
+                                                                    <div class="col-sm-4">
+                                                                      <h6 class="office-text-2"> ManTech HQ</h6>
+                                                                      <h6 class="office-text"> 1050 Main Street, Herndon VA 22313 </h6>
+                                                                      <h6 class="office-text-2"> CAGE Code/Military ID</h6>
+                                                                      <h6 class="office-text"> 1212312412421</h6>
+                                                                    </div>
+                                                                    
+                                                                  </div>
+
+                                                                  
+
+                                                               </div>
+
+                                                               
+                                                   
+
+                                                           </div>
+
+                                                           <div class="row">
+                                                               <div class="col gen-a">
+                                                                   <div class="form-group row">
+
+                                                                    <div class="col-sm-3">
+                                                                      
+                                                                    </div>
+                                                                   
+                                                                    <div class="col-sm-2">
+                                                                      <h6 class="office-title">Chantilly Office</h6>
+                                                                    </div>
+
+                                                                    <div class="col-sm-4">
+                                                                      <h6 class="office-text-2"> ManTech Chantilly</h6>
+                                                                      <h6 class="office-text"> 14280 Park Meadow Dr, Suite #400 </h6>
+                                                                      <h6 class="office-text-2"> CAGE Code/Military ID</h6>
+                                                                      <h6 class="office-text"> 1212312412421</h6>
+                                                                    </div>
+                                                                    
+                                                                  </div>
+
+                                                                  
+
+                                                               </div>
+
+                                                               
+                                                   
+
+                                                           </div>
+
+                                                        </div>
+
+
+                                                        
+
+                                                        
+
+
+
+
+                                                        
+
+                                                         
+
+
+                                           </div>
+
+                                    
+
+
+
+
+                                         
+
+                                           
+
+
+                                           
+                               
+
+                                          
+
+
+                                              
+
+                                           
+
+                                        
+                              
+
+
+                                        
+
+                                              
+
+                                               
+
+
+
+
+
+
+                                           
+
+                                            
+
+
+
+
+
+
+
+
+                                           
+
+
+
+                                          
+
+                                           
+
+                                           
+
+                                                                       
+                                                                             
+                                                                         
+    </div>);
+
+
+
+ 
+
+                      
+
+                    }).ToHtmlString()
+         );
+      })
+)
+
+
+
+
+<script>
+
+    function OrgEditBtnClick(){
+    $("#OrgFormFieldset").removeAttr("disabled");
+    $("#OrgSaveId").removeAttr("hidden");
+    $("#OrgEditId").prop("hidden", true);
+}
+function OrgSaveBtnClick(){
+     $("#OrgEditId").removeAttr("hidden");
+      $("#OrgSaveId").prop("hidden", true);
+}
+
+
+function OfficeEditBtnClick(i){
+   $("#OfficeFormFieldset-"+i+"").removeAttr("disabled");
+   $("#OfficeSaveId-"+i+"").removeAttr("hidden");
+   $("#OfficeEditId-"+i+"").prop("hidden", true);
+}
+
+function OfficeSaveBtnClick(i){
+      $("#OfficeEditId-"+i+"").removeAttr("hidden");
+      $("#OfficeSaveId-"+i+"").prop("hidden", true);
+}
+
+  function OrgCancelBtnClick(){
+    $("#OrgFormFieldset").prop("disabled", true);
+      $("#OrgSaveId").prop("hidden", true);
+      $("#OrgEditId").removeAttr("hidden");
+   
+  }
+
+function OfficeCancelBtnClick(i){
+   $("#OfficeFormFieldset-"+i+"").prop("disabled", true);
+   $("#OfficeSaveId-"+i+"").prop("hidden", true);
+   $("#OfficeEditId-"+i+"").removeAttr("hidden");
+}
+
+
+
+</script>

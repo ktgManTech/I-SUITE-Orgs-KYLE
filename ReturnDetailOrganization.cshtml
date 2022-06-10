@@ -1,0 +1,761 @@
+﻿@model  ReturnDetailOrganizationViewModel
+
+
+ <nav class="navbar navbar-expand-sm navbar-light bg-white">
+  <div class="container-fluid">
+    <div class="dropdown">
+                <a href="#" class="d-flex align-items-center link-dark text-decoration-none" id="dropdownNavLink" data-bs-toggle="dropdown" aria-expanded="false">
+                  <img src="~/assets/waffle.png" />
+                </a>
+                <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownNavLink">
+           
+                  <li><a class="dropdown-item" href="#" aria-current="page"><img src="~/assets/waffleicons/BIDS Icon.png" style="width: 50px; height: auto;"/></a></li>
+                  <li><a class="dropdown-item" href="#"><img src="~/assets/waffleicons/Contacts Icon.png" style="width: 50px; height: auto;" /></a></li>  
+                   <li><a class="dropdown-item" href="#"><img src="~/assets/waffleicons/Event Registration Icon.png" style="width: 50px; height: auto;" /></a></li>
+                    <li><a class="dropdown-item" href="#"><img src="~/assets/waffleicons/ITFT Icon.png" style="width: 50px; height: auto;" /></a></li>
+                  <li><a class="dropdown-item" href="#"><img src="~/assets/waffleicons/Organization Icon.png"  style="width: 50px; height: auto;"/></a></li>
+                  <li><a class="dropdown-item" href="#"><img src="~/assets/waffleicons/Project Management Icon.png"  style="width: 50px; height: auto;"/></a></li>
+                </ul>
+              </div>
+    <div class="collapse navbar-collapse" id="mynavbar">
+      <ul class="navbar-nav me-auto justify-content-center">
+        <li class="nav-item">
+          <a class="nav-link" href="javascript:void(0)"> <h1>Organizations</h1></a>
+        </li>
+        </ul>
+        <ul class="navbar-nav me-auto justify-content-end">
+        <li class="align-content-end"><a asp-controller="Organization" asp-action="AddNewOrganization" class="btn btn-header">Add New Organization</a></li>
+        <li class="align-content-end"><img src="~/assets/avatar.png" /></li>
+        <li class="align-content-end"><p class="avatar-text">First, Last Name</p></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+
+
+
+
+ <br />
+
+@(Html.Kendo().Splitter()
+      .Name("orgVerticalPageSplitter")
+      .Orientation(SplitterOrientation.Horizontal)
+    .Panes(horizontalPanes =>
+      {
+           horizontalPanes.Add()
+                            .HtmlAttributes(new { id = "left-pane" })
+                            .Size("400px")    
+                            .Collapsible(true)
+                            .Content(@<div class="pane-content">
+                                                                        @(Html.Kendo().Grid(Model.GetRDOrganizationList)
+                                .Name("detailGrid")
+                                .Columns(columns => {
+                                 columns.Bound(o => o.OrganizationId).Title("").Hidden(true);
+                                 columns.Template("<a class='text-dark' href='" + Url.Action("ReturnDetailOrganization", "Organization", new { OrganizationID = "#=OrganizationId#" }) +"'>#=OrganizationName# </a>").Title("");
+                                })  
+                                 .ToolBar(t => t.Search())
+                                .Search(s => {
+                                        s.Field(o => o.OrganizationName, "contains");
+                                        s.Field(o =>  o.OrganizationAddress1, "contains");
+                                        s.Field(o =>  o.OrganizationCity, "contains");
+                                        s.Field(o =>  o.OrganizationState, "contains");
+                                })
+                                .Pageable(pageable => pageable.ButtonCount(4).Info(false))  
+                              //   .Height(700)
+                                 .Sortable()
+                                 .Filterable()
+                        .DataSource(dataSource => dataSource
+                                    .Ajax()
+                                    .Batch(true)
+                                    .PageSize(20)
+                                    .AutoSync(true)
+                                    .ServerOperation(false) )  
+                                                                        )</div>);
+
+          horizontalPanes.Add()
+              .Scrollable(true)
+              .Collapsible(true)
+              .Content(
+                Html.Kendo().Splitter()
+                   .Orientation(SplitterOrientation.Vertical)
+                    .Name("orgHorizontalPageSplitter")
+                    .Panes(verticalPanes =>
+                    {
+                        verticalPanes.Add()
+                            .HtmlAttributes(new { id = "left-pane" })
+                            .Size("400px")
+                             .Scrollable(true)
+                            .Collapsible(true)
+                            .Content(   @<div class="pane-content-KYLE">
+
+
+                                
+                               
+
+                                <!-- General Info & Button -->
+
+                                             <div class="w3-container-first-2">
+
+                                                        <div class="row">
+                                                           <div class="col-sm-1">
+                                                               <a onclick="location.href='/Organization/FirstViewOrganization?OrganizationID=101';">
+                                                                    <i class="fa-solid fa-circle-arrow-left fa-4x"></i>
+                                                               </a>
+                                                           </div>
+                                                           <div class="col-sm-3">
+                                                               <h2 class="large-heading"> Go Back </h2>
+                                                           </div>
+                                                           
+                                                         </div>
+
+                                                         <div class="row spacing">
+                                                           <div class="col-sm-6">
+                                                               <h2 class="large-heading"> General Information </h2>
+                                                           </div>
+                                                           <div class="col">
+                                                               <div class="col">
+                                                                   <button class="btn btn-primary-edit"> Edit </button>
+                                                               </div>
+                                                            </div>
+                                                        </div>
+
+                                                     <div class="w3-container-first">
+                                                       <div class="row">
+                                                           <div class="col gen-a">
+                                                               <div class="form-group row">
+                                                                <label for="Name" class="col-sm-4 col-form-label">Name</label>
+                                                                <div class="col-sm-6">
+                                                                  <input type="text" class="form-control" id="inputalias" placeholder="ManTech International">
+                                                                </div>
+                                                              </div>
+                                                           </div>
+
+                                                           <div class="col">
+                                                               <div class="form-group row">
+                                                                <label for="Alias" class="col-sm-4 col-form-label">Alias</label>
+                                                                <div class="col-sm-6">
+                                                                  <input type="text" class="form-control" id="inputalias" placeholder="ManTech">
+                                                                </div>
+                                                              </div>
+                                                           </div>
+                                                   
+
+                                                       </div>
+
+                                                       <div class="row">
+                                                           <div class="col gen-a">
+                                                               <div class="form-group row">
+                                                                <label for="Alias" class="col-sm-4 col-form-label">Address A</label>
+                                                                <div class="col-sm-6">
+                                                                  <input type="text" class="form-control" id="inputalias" placeholder="14860 Park Meadow Dr.">
+                                                                </div>
+                                                              </div>
+                                                           </div>
+                                                           <div class="col">
+                                                               <div class="form-group row">
+                                                                <label for="Alias" class="col-sm-4 col-form-label">Address B</label>
+                                                                <div class="col-sm-6">
+                                                                  <input type="text" class="form-control" id="inputalias" placeholder="Address B">
+                                                                </div>
+                                                              </div>
+                                                           </div>
+                                                   
+
+                                                       </div>
+
+                                                       <div class="row">
+                                                           <div class="col gen-a">
+                                                               <div class="form-group row">
+                                                                <label for="Alias" class="col-sm-4 col-form-label">City</label>
+                                                                <div class="col-sm-6">
+                                                                  <input type="text" class="form-control" id="inputalias" placeholder="Chantilly">
+                                                                </div>
+                                                              </div>
+                                                           </div>
+                                                           <div class="col">
+                                                               <div class="form-group row">
+                                                                <label for="Alias" class="col-sm-4 col-form-label">State</label>
+                                                                <div class="col-sm-6">
+                                                                  <select class="form-select" aria-label="Choose State">
+                                                                  <option selected>Virginia</option>
+                                                                  <option value="1">New York</option>
+                                                                  <option value="2">California</option>
+                                                                  <option value="3">Virginia</option>
+                                                                 </select>
+                                                                </div>
+                                                              </div>
+                                                           </div>
+                                                  
+                                                   
+
+                                                       </div>
+
+                                                       <div class="row">
+                                                           <div class="col gen-a">
+                                                               <div class="form-group row">
+                                                                <label for="Alias" class="col-sm-4 col-form-label">Country</label>
+                                                                <div class="col-sm-6">
+                                                                  <input type="text" class="form-control" id="inputalias" placeholder="United States">
+                                                                </div>
+                                                              </div>
+                                                           </div>
+
+                                                           <div class="col gen-a">
+                                                               <div class="form-group row">
+                                                                <label for="Alias" class="col-sm-4 col-form-label">CAGE Code/ID</label>
+                                                                <div class="col-sm-6">
+                                                                  <input type="text" class="form-control" id="inputalias" placeholder="CAGE Code/ID">
+                                                                </div>
+                                                              </div>
+                                                           </div>
+                                                   
+
+                                                       </div>
+
+                                                       <div class="row">
+                                                   
+                                                           <div class="col-sm-2">
+                                                                <h8 class="col-form-label"> Vendor </h8>
+                                                           </div>
+                                                           <div class="col-sm-4">
+                                                                <div class="form-check">
+                                                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                                                </div>
+                                                            </div>
+                                                       </div>
+
+                                                       <div class="row-comment">
+
+                                                           <div class="col">
+                                                               <div class="form-group row">
+                                                                <label for="Alias" class="col-sm-2 col-form-label">CAGE Code/ID</label>
+                                                                <div class="col-sm-9">
+                                                                  <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                                                                </div>
+                                                              </div>
+                                                           </div>
+
+                                                   
+
+                                                   
+                                                   
+
+                                                       </div>
+                                               
+                                               
+
+
+
+                                                    </div>
+
+
+                                           </div>
+
+                                            
+                                               
+
+
+
+                                          <hr class="line-sep"/>
+
+                                          
+                                <!-- Office Information -->
+
+                                <div class="w3-container-intro">
+
+                                                         <div class="row">
+                                                           <div class="col-sm-6">
+                                                               <h2 class="large-heading"> Office Information </h2>
+                                                           </div>
+                                                           <div class="col">
+                                                               <div class="col">
+                                                                  
+                                                               </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="w3-container-fourth">
+                                                            <div class="row">
+                                                                <div class="col-sm-3">
+                                                                   <h2 class="medium-heading">Herndon Office </h2>
+                                                                </div>
+                                                                <div class="col-sm-4">
+                                                                   <div class="col-sm-6">
+                                                                      <button class="btn btn-primary-edit"> Edit </button>
+                                                                   </div>
+                                                                </div>
+                                                                
+                                                            </div>
+                                                        </div>
+
+                                                         <div class="w3-container-first">
+                                                           <div class="row">
+                                                               <div class="col gen-a">
+                                                                   <div class="form-group row">
+                                                                   
+                                                                    <div class="col-sm-6">
+                                                                      <input type="text" class="form-control" id="inputalias" placeholder="ManTech Headquarters">
+                                                                    </div>
+                                                                    <div class="col-sm-6">
+                                                                      <input type="text" class="form-control" id="inputalias" placeholder="Herndon Office">
+                                                                    </div>
+                                                                    <div class="col-sm-6">
+                                                                      <input type="text" class="form-control" id="inputalias" placeholder="2250 Corporate Park Dr.">
+                                                                    </div>
+                                                                    <div class="col-sm-6">
+                                                                      <input type="text" class="form-control" id="inputalias" placeholder="Address B">
+                                                                    </div>
+                                                                    <div class="col-sm-6">
+                                                                      <input type="text" class="form-control" id="inputalias" placeholder="Herndon">
+                                                                    </div>
+                                                                    <div class="col-sm-6">
+                                                                      <input type="text" class="form-control" id="inputalias" placeholder="Virginia">
+                                                                    </div>
+                                                                    <div class="col-sm-6">
+                                                                      <input type="text" class="form-control" id="inputalias" placeholder="United States">
+                                                                    </div>
+                                                                    <div class="col-sm-6">
+                                                                      <input type="text" class="form-control" id="inputalias" placeholder="CAGE Code/ID">
+                                                                    </div>
+                                                                  </div>
+                                                               </div>
+
+                                                               <div class="col">
+                                                                   <div class="form-group row">
+                                                                   
+                                                                    <div class="col-sm-6">
+                                                                      
+                                                                    </div>
+                                                                  </div>
+                                                               </div>
+                                                   
+
+                                                           </div>
+                                                        </div>
+
+
+                                                        <div class="w3-container-fourth">
+                                                            <div class="row">
+                                                                <div class="col-sm-3">
+                                                                   <h2 class="medium-heading">Chantilly Office </h2>
+                                                                </div>
+                                                                <div class="col-sm-4">
+                                                                   <div class="col-sm-6">
+                                                                      <button class="btn btn-primary-edit"> Edit </button>
+                                                                   </div>
+                                                                </div>
+                                                                
+                                                            </div>
+                                                        </div>
+
+                                                         <div class="w3-container-first">
+                                                           <div class="row">
+                                                               <div class="col gen-a">
+                                                                   <div class="form-group row">
+                                                                   
+                                                                    <div class="col-sm-6">
+                                                                      <input type="text" class="form-control" id="inputalias" placeholder="ManTech International">
+                                                                    </div>
+                                                                    <div class="col-sm-6">
+                                                                      <input type="text" class="form-control" id="inputalias" placeholder="Chantilly Office">
+                                                                    </div>
+                                                                    <div class="col-sm-6">
+                                                                      <input type="text" class="form-control" id="inputalias" placeholder="14280 Park Meadows Dr.">
+                                                                    </div>
+                                                                    <div class="col-sm-6">
+                                                                      <input type="text" class="form-control" id="inputalias" placeholder="Suite 400">
+                                                                    </div>
+                                                                    <div class="col-sm-6">
+                                                                      <input type="text" class="form-control" id="inputalias" placeholder="Chantilly">
+                                                                    </div>
+                                                                    <div class="col-sm-6">
+                                                                      <input type="text" class="form-control" id="inputalias" placeholder="Virginia">
+                                                                    </div>
+                                                                    <div class="col-sm-6">
+                                                                      <input type="text" class="form-control" id="inputalias" placeholder="United States">
+                                                                    </div>
+                                                                    <div class="col-sm-6">
+                                                                      <input type="text" class="form-control" id="inputalias" placeholder="CAGE Code/ID">
+                                                                    </div>
+                                                                  </div>
+                                                               </div>
+
+                                                               <div class="col">
+                                                                   <div class="form-group row">
+                                                                   
+                                                                    <div class="col-sm-6">
+                                                                      
+                                                                    </div>
+                                                                  </div>
+                                                               </div>
+                                                   
+
+                                                           </div>
+                                                           <div class="col">
+                                                                   <div class="form-group row">
+                                                                   
+                                                                    <div class="col-sm-6">
+                                                                      <a asp-controller="Organization" asp-action="AddNewOrganization" class="btn btn-primary-add-office">Add New Office</a>
+                                                                    </div>
+                                                                  </div>
+                                                               </div>
+
+                                                        </div>
+
+
+
+
+                                                        
+
+                                                         
+
+
+                                           </div>
+
+                                           <hr class="line-sep"/>
+
+
+
+
+                                         
+
+                                           
+
+
+                                           
+                                <!-- Business Types -->
+
+                                           <div class="w3-container-fourth">
+                                               <div class="row">
+                                                   <div class="col">
+                                                       <h2 class="large-heading"> Business Types </h2>
+                                                   </div>
+                                                   <div class="col">
+                                                       <div class="col">
+                                                           <button class="btn btn-primary-edit"> Edit </button>
+                                                       </div>
+                                                   </div>
+                                               </div>
+                                             </div>
+
+
+                                              <div class="w3-container-first">
+                                               <div class="row">
+                                                   <div class="col">
+                                                       <div class="form-group row">
+                                                        <label for="inputEmail3" class="col-sm-4 col-form-label">Ethnic Group Type</label>
+                                                        <div class="col-sm-6">
+                                                          <input type="email" class="form-control" id="inputEmail3" placeholder="Test">
+                                                        </div>
+                                                      </div>
+                                                   </div>
+                                                   <div class="col">
+                                                           <div class="form-group row">
+                                                        <label for="inputEmail3" class="col-sm-4 col-form-label">Number Employees</label>
+                                                        <div class="col-sm-6">
+                                                          <input type="email" class="form-control" id="inputEmail3" placeholder="Test">
+                                                        </div>
+                                                      </div>
+                                                   </div>
+                                               </div>
+                                               <div class="row">
+                                                   <div class="col">
+                                                       <div class="form-group row">
+                                                        <label for="inputEmail3" class="col-sm-4 col-form-label">Veteran Group Type</label>
+                                                        <div class="col-sm-6">
+                                                          <input type="email" class="form-control" id="inputEmail3" placeholder="Test">
+                                                        </div>
+                                                      </div>
+                                                   </div>
+                                                   <div class="col">
+                                                           <div class="form-group row">
+                                                        <label for="inputEmail3" class="col-sm-4 col-form-label">Annual Gross Income</label>
+                                                        <div class="col-sm-6">
+                                                          <input type="email" class="form-control" id="inputEmail3" placeholder="Test">
+                                                        </div>
+                                                      </div>
+                                                   </div>
+                                               </div>
+
+                                               <div class="row">
+                                                   <div class="col">
+                                                       <div class="form-group row">
+                                                        <label for="inputEmail3" class="col-sm-4 col-form-label">Small Bus. Preference</label>
+                                                        <div class="col-sm-6">
+                                                          <input type="email" class="form-control" id="inputEmail3" placeholder="Test">
+                                                        </div>
+                                                      </div>
+                                                   </div>
+
+                                                   <div class="col">
+                                                           <div class="form-group row">
+                                                        <label for="inputEmail3" class="col-sm-4 col-form-label">Government Type</label>
+                                                        <div class="col-sm-6">
+                                                          <input type="email" class="form-control" id="inputEmail3" placeholder="Test">
+                                                        </div>
+                                                      </div>
+                                                   </div>
+                                               </div>
+
+                                               <div class="row">
+                                                   <div class="col">
+                                                       <div class="form-group row">
+                                                        <label for="inputEmail3" class="col-sm-4 col-form-label">Other Vendor Type</label>
+                                                        <div class="col-sm-6">
+                                                          <input type="email" class="form-control" id="inputEmail3" placeholder="Test">
+                                                        </div>
+                                                      </div>
+                                                   </div>
+
+                                                   <div class="col">
+                                                           
+                                                   </div>
+                                               </div>
+
+                                            </div>
+
+                                            <hr class="line-sep"/>
+
+                                        
+                                <!-- Business Types Section B -->
+
+
+                                        <div class="w3-container-first">
+
+                                               <div class="row">
+                                                   <div class="col">
+                                                       <h8 class="col-form-label"> Hubzone </h8>
+                                                   </div>
+                                                   <div class="col">
+                                                       <div class="form-check">
+                                                          <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                                       </div>
+                                                   </div>
+                                                   <div class="col">
+                                                       <h8 class="col-form-label"> Educational Institution </h8>
+                                                   </div>
+                                                   <div class="col">
+                                                       <div class="form-check">
+                                                          <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                                       </div>
+                                                   </div>
+                                               </div>
+
+                                               <div class="row">
+                                                   <div class="col">
+                                                       <h8 class="col-form-label"> Large Business </h8>
+                                                   </div>
+                                                   <div class="col">
+                                                       <div class="form-check">
+                                                          <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                                       </div>
+                                                   </div>
+                                                   <div class="col">
+                                                       <h8 class="col-form-label"> Historically Black Institution </h8>
+                                                   </div>
+                                                   <div class="col">
+                                                       <div class="form-check">
+                                                          <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                                       </div>
+                                                   </div>
+                                               </div>
+
+                                               <div class="row">
+                                                   <div class="col">
+                                                       <h8 class="col-form-label"> JWOD Agency </h8>
+                                                   </div>
+                                                   <div class="col">
+                                                       <div class="form-check">
+                                                          <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                                       </div>
+                                                   </div>
+                                                   <div class="col">
+                                                       <h8 class="col-form-label"> 8(a) Program Participant </h8>
+                                                   </div>
+                                                   <div class="col">
+                                                       <div class="form-check">
+                                                          <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                                       </div>
+                                                   </div>
+                                               </div>
+
+                                               <div class="row">
+                                                   <div class="col">
+                                                       <h8 class="col-form-label"> Foreign Concern/Entity </h8>
+                                                   </div>
+                                                   <div class="col">
+                                                       <div class="form-check">
+                                                          <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                                       </div>
+                                                   </div>
+                                                   <div class="col">
+                                                       <h8 class="col-form-label"> Small Disadvantage Business  </h8>
+                                                   </div>
+                                                   <div class="col">
+                                                       <div class="form-check">
+                                                          <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                                       </div>
+                                                   </div>
+                                               </div>
+
+                                               <div class="row">
+                                                   <div class="col">
+                                                       <h8 class="col-form-label"> Women Owned Business </h8>
+                                                   </div>
+                                                   <div class="col">
+                                                       <div class="form-check">
+                                                          <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                                       </div>
+                                                   </div>
+                                                   <div class="col">
+                                                       <h8 class="col-form-label"> Small Business </h8>
+                                                   </div>
+                                                   <div class="col">
+                                                       <div class="form-check">
+                                                          <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                                       </div>
+                                                   </div>
+                                               </div>
+
+                                               <div class="row">
+                                                   <div class="col">
+                                                       <h8 class="col-form-label"> Minority Institution </h8>
+                                                   </div>
+                                                   <div class="col">
+                                                       <div class="form-check">
+                                                          <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                                       </div>
+                                                   </div>
+                                                   <div class="col">
+                                                       <h8 class="col-form-label"> Hospital </h8>
+                                                   </div>
+                                                   <div class="col">
+                                                       <div class="form-check">
+                                                          <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                                       </div>
+                                                   </div>
+                                               </div>
+
+                                               <div class="row">
+                                                   <div class="col">
+                                                       <h8 class="col-form-label"> Non-Profit Institution </h8>
+                                                   </div>
+                                                   <div class="col">
+                                                       <div class="form-check">
+                                                          <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                                       </div>
+                                                   </div>
+                                                   <div class="col">
+                                                       <h8 class="col-form-label"> Domestic Firm </h8>
+                                                   </div>
+                                                   <div class="col">
+                                                       <div class="form-check">
+                                                          <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                                       </div>
+                                                   </div>
+                                               </div>
+
+                                               <div class="col">
+                                                                   <div class="form-group row">
+                                                                   
+                                                                    <div class="col-sm-6">
+                                                                      <a asp-controller="Organization" asp-action="AddNewOrganization" class="btn btn-primary-add-office">Save Information</a>
+                                                                    </div>
+                                                                  </div>
+                                                               </div>
+
+                                               <hr class="line-sep-3"/>
+
+
+                                        </div>
+
+                                              
+
+                                               
+
+
+
+
+
+
+                                           
+
+                                            
+
+
+
+
+
+
+
+
+                                           
+
+
+
+                                          
+
+                                           
+
+                                           
+
+                                                                       
+                                                                             
+                                                                         
+    </div>);
+
+
+
+ 
+
+                      
+
+                    }).ToHtmlString()
+         );
+      })
+)
+
+
+
+
+<script>
+
+    function OrgEditBtnClick(){
+    $("#OrgFormFieldset").removeAttr("disabled");
+    $("#OrgSaveId").removeAttr("hidden");
+    $("#OrgEditId").prop("hidden", true);
+}
+function OrgSaveBtnClick(){
+     $("#OrgEditId").removeAttr("hidden");
+      $("#OrgSaveId").prop("hidden", true);
+}
+
+
+function OfficeEditBtnClick(i){
+   $("#OfficeFormFieldset-"+i+"").removeAttr("disabled");
+   $("#OfficeSaveId-"+i+"").removeAttr("hidden");
+   $("#OfficeEditId-"+i+"").prop("hidden", true);
+}
+
+function OfficeSaveBtnClick(i){
+      $("#OfficeEditId-"+i+"").removeAttr("hidden");
+      $("#OfficeSaveId-"+i+"").prop("hidden", true);
+}
+
+  function OrgCancelBtnClick(){
+    $("#OrgFormFieldset").prop("disabled", true);
+      $("#OrgSaveId").prop("hidden", true);
+      $("#OrgEditId").removeAttr("hidden");
+   
+  }
+
+function OfficeCancelBtnClick(i){
+   $("#OfficeFormFieldset-"+i+"").prop("disabled", true);
+   $("#OfficeSaveId-"+i+"").prop("hidden", true);
+   $("#OfficeEditId-"+i+"").removeAttr("hidden");
+}
+
+
+
+</script>

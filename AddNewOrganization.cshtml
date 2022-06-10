@@ -1,0 +1,174 @@
+﻿@model AddNewOrganizationViewModel
+
+<form class="container border" id="AddOrgForm" asp-action="AddNewOrganization" method="post"  style="padding-top:30px; padding-bottom:30px;">
+       <div class="row justify-content-end">
+            <div class="col-1">
+               <button type="submit" id="OrgSaveId" disabled class="btn btn-primary mx-1" onclick="onOrgSaveBtnClick()">Save</button>             
+            </div> 
+            <div class="col-1">
+                  <a asp-action="AddNewOrganization" id="OrgCancelId"  class="btn btn-danger mx-1">Cancel</a>
+             </div>
+        </div>   
+        <div class="form-group row">
+        <div class="col-1" style="font-weight:bold">Name</div>
+        <div class="col-md-4">
+      <input   type="text" id="OrgNameId" asp-for="AddOrganization.OrganizationName" required class="form-control">
+         <span asp-validation-for="AddOrganization.OrganizationName" class="text-danger"></span>
+        </div>   
+       <div class="col-sm-1" style="font-weight:bold">Aliases</div>
+       <div class="col-md-4">
+      <input type="text" id="OrgAliasId" asp-for="AddOrganization.OrganizationAliases" class="form-control">
+      </div>
+         <div class="form-check form-check-inline">
+        <label class="form-check-label" for="inlineCheckbox1">Is Vendor?</label>
+        <input class="form-check-input" type="checkbox" asp-for="AddOrganization.IsVendor" id="isVendorId" value="AddOrganization.IsVendor" readonly="readonly" >                                    
+        </div>
+      </div>
+        <div class="form-group row">
+        <div class="col-1" style="font-weight:bold">Address 1</div>
+        <div class="col-md-4">
+      <input type="text" id="Address1Id" asp-for="AddOrganization.OrganizationAddress1" required class="form-control">
+         <span asp-validation-for="AddOrganization.OrganizationAddress1" class="text-danger"></span>
+        </div>   
+       <div class="col-sm-1" style="font-weight:bold">Address 2</div>
+       <div class="col-md-4">
+      <input type="text" id="Address2Id" asp-for="AddOrganization.OrganizationAddress2" class="form-control">
+      </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-1" style="font-weight:bold">City</div>
+        <div class="col-md-4">
+      <input type="text" id="CityId" asp-for="AddOrganization.OrganizationCity" required class="form-control">
+         <span asp-validation-for="AddOrganization.OrganizationCity" class="text-danger"></span>
+        </div>   
+       <div class="col-sm-1" style="font-weight:bold">State</div>
+       <div class="col-md-2">
+           <select  id="StateId" asp-for="AddOrganization.OrganizationState" asp-items="@Model.GetState" required class="form-control"> 
+           </select>
+      </div>
+        <div class="col-sm-1" style="font-weight:bold">ZIP Code</div>
+       <div class="col-md-2">
+      <input type="text" id="ZipCodeId" asp-for="AddOrganization.OrganizationZipCode" class="form-control">
+      </div>
+      </div>
+       <div class="form-group row">
+       <div class="col-1" style="font-weight:bold">Country</div>
+       <div class="col-md-3">
+      <input type="text" id="CountryId" asp-for="AddOrganization.OrganizationCountry" required  class="form-control">
+        <span asp-validation-for="AddOrganization.OrganizationCountry" class="text-danger"></span>
+        </div>
+       <div class="col-sm-1" style="font-weight:bold">Cage Code/Military Location ID:</div>
+           <div class="col-md-4">
+       <input type="text" id="CageCodeId" class="form-control"  placeholder="Cage Code">
+       </div>
+          </div>
+      <div class="row justify-content-end">
+            <div class="col-2">
+              <button type="button" id="AddOfficeBtnId" @ViewBag.AddOfficeDisabled class="btn btn-primary mx-1" onclick="onClickAddOffice()">Add Office</button>
+        </div>
+        </div>
+</form>
+
+<form   class="container-center-horizontal border" id="AddOfficeForm"  asp-action="AddNewOffice" method="post" style="padding-top:30px; padding-bottom:30px;" hidden="hidden" >
+
+        <input asp-for="AddOrganization.OrganizationId" hidden />
+        <input asp-for="AddOrganization.OrganizationName" hidden />
+         <input asp-for="AddOrganization.OrganizationAddress1" hidden />
+         <input asp-for="AddOrganization.OrganizationCity" hidden />
+         <input asp-for="AddOrganization.OrganizationCountry" hidden />
+       <div class="form-group row">
+       <div class="col-2" style="font-weight:bold">Name</div>
+       <div class="col-md-10">
+      <input type="text"  id="OfficeNameId" asp-for="AddOffice.OfficeName" class="form-control" style="word-wrap:inherit">
+        <span asp-validation-for="AddOffice.OfficeName" class="text-danger"></span>
+        </div>
+        </div>
+        <div class="form-group row">
+       <div class="col-2" style="font-weight:bold">Address</div>
+       <div class="col-md-10">
+      <input type="text" id="OfficeAddress1Id" asp-for="AddOffice.OfficeAddress1" required class="form-control" style="word-wrap:inherit">
+         <span asp-validation-for="AddOffice.OfficeAddress1" class="text-danger"></span>
+       </div>
+       </div>
+      <div class="form-group row">
+        <div class="col-2" style="font-weight:bold;">Address 2</div>
+       <div class="col-md-10">
+      <input type="text" id="OfficeAddress2Id" asp-for="AddOffice.OfficeAddress2"  class="form-control" style="word-wrap:inherit">
+      </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-2" style="font-weight:bold">City</div>
+        <div class="col-md-4">
+      <input type="text" id="OfficeCityId" asp-for="AddOffice.OfficeCity" required class="form-control">
+         <span asp-validation-for="AddOffice.OfficeCity" class="text-danger"></span>
+        </div>   
+       <div class="col-sm-1" style="font-weight:bold">State</div>
+       <div class="col-md-2">
+        <select  id="OfficeStateId" asp-for="AddOffice.OfficeState" asp-items="@Model.GetState" class="form-control"> 
+        </select>
+      </div>
+        <div class="col-sm-1" style="font-weight:bold">ZIP Code</div>
+       <div class="col-md-2">
+      <input type="text" id="OfficeZipCodeId" asp-for="AddOffice.OfficeZipCode" class="form-control">
+      </div>
+         </div>
+       <div class="form-group row">
+       <div class="col-2" style="font-weight:bold">Country</div>
+       <div class="col-md-3">
+      <input type="text" id="OfficeCountryId" asp-for="AddOffice.OfficeCountry" required  class="form-control">
+        <span asp-validation-for="AddOffice.OfficeCountry" class="text-danger"></span>
+        </div>
+       <div class="col-sm-2" style="font-weight:bold">Cage Code/Military Location ID:</div>
+           <div class="col-md-4">
+       <input type="text" id="OfficeCageCodeId" class="form-control"  placeholder="Cage Code">
+       </div>
+          </div>
+    <div class="row justify-content-end">
+            <div class="col-2">
+               <button type="submit" id="OfficeSaveId" class="btn btn-primary mx-1" >Save</button> 
+               <button type="reset" id="OfficeCancelId" class="btn btn-danger mx-1" onclick="onOfficeClickCancel()">Cancel</button>
+        </div>
+        </div>
+</form>
+
+            @if (!ViewData.ModelState.IsValid)
+            {
+                <ul>
+                    @foreach (var modelState in ViewData.ModelState.Values)
+                    {
+                        foreach (var error in modelState.Errors)
+                        {
+                            <li style="color:red">@error.ErrorMessage</li>
+                        }
+                    }
+                </ul>
+            }
+
+
+<script>
+
+    //function onOrgClickCancel(){
+    // //   $("#AddOfficeBtnId").removeAttr("disabled");
+    //}
+    //function onOrgClickCancel(){
+    //     $("#OrgSaveId").prop("disabled", true);
+    //}
+   function onOrgSaveBtnClick(){
+         $("#formFieldset").prop("disabled", true);
+        
+   }
+
+     $("#AddOrgForm").keyup(function(){
+         $("#OrgSaveId").removeAttr("disabled");
+     })
+
+    function onClickAddOffice(){
+        if ($("#AddOrgForm").valid()){
+        $("#AddOfficeForm").removeAttr("hidden");
+        }          
+    }
+
+      function onOfficeClickCancel(){
+          $("#AddOfficeForm").prop("hidden", true);
+    }
+</script>
